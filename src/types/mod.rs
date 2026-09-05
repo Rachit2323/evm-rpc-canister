@@ -46,10 +46,10 @@ impl ResolvedRpcService {
         let url = api
             .url
             .parse::<http::Uri>()
-            .map_err(|e| format!("invalid URL: {e}"))
+            .map_err(|e| format!("Invalid URL: {e}"))
             .and_then(|url| match url.host() {
                 Some(_) => Ok(url),
-                None => Err("invalid URL: missing host".to_string()),
+                None => Err("Invalid URL: missing host".to_string()),
             })
             .map_err(|e| RpcError::ValidationError(ValidationError::Custom(e)))?;
 
