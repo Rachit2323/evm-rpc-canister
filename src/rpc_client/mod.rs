@@ -5,7 +5,7 @@ use crate::{
         service_request_builder,
     },
     memory::{get_override_provider, rank_providers, record_ok_result},
-    providers::{self, resolve_rpc_service, SupportedRpcService},
+    providers::{resolve_rpc_service, SupportedRpcService},
     rpc_client::{
         eth_rpc::{
             ResponseSizeEstimate, ResponseTransform, ResponseTransformEnvelope, HEADER_SIZE_LIMIT,
