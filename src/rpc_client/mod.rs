@@ -5,7 +5,7 @@ use crate::{
         service_request_builder,
     },
     memory::{get_override_provider, rank_providers, record_ok_result},
-    providers::{resolve_rpc_service, SupportedRpcService},
+    providers::{self, resolve_rpc_service, SupportedRpcService},
     rpc_client::{
         eth_rpc::{
             ResponseSizeEstimate, ResponseTransform, ResponseTransformEnvelope, HEADER_SIZE_LIMIT,
@@ -162,6 +162,16 @@ fn choose_providers(
     strategy: ConsensusStrategy,
     now: Timestamp,
 ) -> Result<BTreeSet<RpcService>, ProviderError> {
+    if let Some(providers) = &user_input {
+        let unique: BTreeSet<RpcService> = providers.iter().cloned().collect();
+        if providers.len() != unique.len() {
+            return Err(ProviderError::InvalidRpcConfig(format!(
+                "duplicate providers are not allowed: {} services specified, but only {} are unique",
+                providers.len(),
+                unique.len()
+            )));
+        }
+    }
     match strategy {
         ConsensusStrategy::Equality => Ok(user_input
             .unwrap_or_else(|| {
