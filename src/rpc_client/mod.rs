@@ -163,7 +163,7 @@ fn choose_providers(
     now: Timestamp,
 ) -> Result<BTreeSet<RpcService>, ProviderError> {
     if let Some(providers) = &user_input {
-        let unique: BTreeSet<RpcService> = providers.iter().cloned().collect();
+        let unique: BTreeSet<&RpcService> = providers.iter().collect();
         if providers.len() != unique.len() {
             return Err(ProviderError::InvalidRpcConfig(format!(
                 "duplicate providers are not allowed: {} services specified, but only {} are unique",
